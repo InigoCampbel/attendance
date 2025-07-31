@@ -336,17 +336,19 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
+                    mode: 'cors',
                     body: JSON.stringify(attendanceData)
                 });
                 
-                if (response.ok) {
-                    const result = await response.json();
+                const result = await response.json();
+                
+                if (result.success) {
                     showSuccess(`🎉 Attendance marked successfully!<br><strong>${name}</strong><br>Time: ${new Date().toLocaleString()}`);
                     
                     // Hide sign-in button after successful submission
                     document.getElementById('google-signin').classList.add('hidden');
                 } else {
-                    throw new Error('Failed to submit attendance');
+                    throw new Error(result.message || 'Failed to submit attendance');
                 }
             } catch (error) {
                 console.error('Error submitting attendance:', error);
